@@ -48,21 +48,7 @@ public class KeyCardActivity extends AppCompatActivity {
 
     private Guest g = new Guest();
 
-    /*private void initGuestObject(DataSnapshot dataSnapshot)
-    {
-        //Setting fields of guest object
-        g.setFirstName(dataSnapshot.getValue(Guest.class).getFirstName());
-        g.setLastName(dataSnapshot.getValue(Guest.class).getLastName());
-        g.setCheckedIn(dataSnapshot.getValue(Guest.class).isCheckedIn());
-        g.setAccountStatus(dataSnapshot.getValue(Guest.class).isAccountStatus());
-        g.setLuggage(dataSnapshot.getValue(Guest.class).getLuggage());
-        g.setCheckInDate(dataSnapshot.getValue(Guest.class).getCheckInDate());
-        g.setCheckOutDate(dataSnapshot.getValue(Guest.class).getCheckOutDate());
-        g.setKeyCode(dataSnapshot.getValue(Guest.class).getKeyCode());
 
-        Log.d(TAG, "MSG: " + g.getKeyCode());
-
-    }*/
     public static String getRandomNumberString() {
         // It will generate 6 digit random Number.
         // from 0 to 999999
@@ -88,7 +74,7 @@ public class KeyCardActivity extends AppCompatActivity {
         boolean checked = b.getBoolean("checkedIn");
 
 
-        if(checked==false)
+        if(checked==false) //arent checked in so you cant click button
         {
             genKeyBtn.setEnabled(false);
             Toast.makeText(KeyCardActivity.this, "Please check in to get key code", Toast.LENGTH_SHORT).show();
@@ -135,6 +121,7 @@ public class KeyCardActivity extends AppCompatActivity {
         });
 
 
+        //setup firebase stuff
         mAuth = FirebaseAuth.getInstance(); //mAuth
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference(); //dbRef
@@ -142,51 +129,13 @@ public class KeyCardActivity extends AppCompatActivity {
         userID = user.getUid();
 
 
-        /*authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-                Log.d(TAG, "BTN CLICKED");
-                if (user == null){
-                    startActivity(new Intent(KeyCardActivity.this, LoginActivity.class));
-                    Log.d(TAG, "onAuthStateChanged: Signed out");
-                    finish();
-                }
-                else
-                {
-                    String userID = user.getUid();
-                    myRef.child("Guest").child(userID).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            initGuestObject(dataSnapshot); //Initializing Object works
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-                }
-            }
-        };*/
-
-
+        //generate button
         genKeyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Map<String,Object> list = new HashMap<>();
 
-                /*if(g.getKeyCode().equals("-1"))
-                {
-                    genKeyBtn.setEnabled(false);
-                }
-                else
-                {
-                    genKeyBtn.setEnabled(true);
-                    list.put("keycode", "11");
-                }*/
+
                 final String code = getRandomNumberString();
                 list.put("keyCode", code);
 

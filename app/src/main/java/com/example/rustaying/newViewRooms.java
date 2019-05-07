@@ -64,7 +64,7 @@ public class newViewRooms extends AppCompatActivity {
         Intent i = getIntent();
         Bundle b = i.getBundleExtra("resInfo");
 
-
+        //get values from bundle
         receivedRoomTypes = b.getStringArray("roomTypes");
 
         int inDay = b.getInt("inDay");
@@ -75,6 +75,7 @@ public class newViewRooms extends AppCompatActivity {
         int outMonth = b.getInt("outMonth");
         int outYear = b.getInt("outYear");
 
+        //log the values
         Log.i(TAG, "onCreate: " + inDay);
         Log.i(TAG, "onCreate: " + inMonth);
         Log.i(TAG, "onCreate: " + inYear);
@@ -83,13 +84,18 @@ public class newViewRooms extends AppCompatActivity {
         Log.i(TAG, "onCreate: " + outMonth);
         Log.i(TAG, "onCreate: " + outYear);
 
+        //create Date objects based off of passed strings
         LocalDate inDate = parseDate(inYear, inMonth, inDay);
         LocalDate outDate = parseDate(outYear, outMonth, outDay);
 
+        //create ResInfo Object from passed information
         resInfo = new ResInfo(inDate, outDate, receivedRoomTypes);
 
+        //create recycleview
         createRecycleView();
 
+
+        //fire base connection
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
@@ -129,6 +135,7 @@ public class newViewRooms extends AppCompatActivity {
         return LocalDate.of(year, month, date);
     }
 
+    //use adapter to create recycle view
     private void createRecycleView(){
         Log.d(TAG, "createRecycleView: Started view");
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -141,6 +148,7 @@ public class newViewRooms extends AppCompatActivity {
 
         for (DataSnapshot data : dataSnapshot.getChildren()){
 
+            //creates Room object from data from firebase
             Log.d(TAG, "showData: " + data.getValue(Room.class).getRoomType());
 
             Room room = new Room(); // create new object
